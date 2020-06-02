@@ -1,14 +1,27 @@
 function sanjuanController(SanJuan) {
-  function post(req, res) {
+  async function post(req, res) {
     const sanjuan = new SanJuan(req.body);
-    if (!req.body.name) {
-      res.status(400);
-      return res.send('Title is required');
+    // if (!req.body.name) {
+    //   res.status(400);
+    //   return res.send('Title is required');
+    // }
+
+    try {
+      const result = await sanjuan.save();
+      const response = {
+        message: 'Sanjuan created succesfully',
+        data: result,
+      };
+
+      return res.status(201).json(response);
+    } catch (e) {
+      res.status(500).json({
+        message: 'Sanjuan could not be created',
+        error: e.toString(),
+      });
     }
 
-    sanjuan.save();
-    res.status(201);
-    return res.json(sanjuan);
+    // res.status(201);
   }
 
   function get(req, res) {
