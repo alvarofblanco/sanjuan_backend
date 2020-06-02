@@ -20,8 +20,10 @@ if (process.env.ENV === "test") {
 const PORT = process.env.PORT || 3000;
 
 // Models
+const SanJuan = require("./db/models/sanjuanModel");
 
 // Routes
+const sanjuanRouter = require("./routers/sanjuanRouter")(SanJuan);
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,10 +31,11 @@ app.use(bodyParser.json());
 app.use(morgan("tiny"));
 
 // Assign Routers to routes
-// app.use('/', indexRouter)
+app.get("/sanjuans", sanjuanRouter);
+app.post("/sanjuans", sanjuanRouter);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to my api");
+  res.json({ message: "Welcome to my api" });
 });
 
 app.listen(PORT, () => {
