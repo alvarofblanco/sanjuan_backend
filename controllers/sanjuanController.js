@@ -3,7 +3,7 @@ function sanjuanController(SanJuan) {
     const sanjuan = new SanJuan(req.body);
     if (!req.body.name) {
       res.status(400);
-      return res.send("Title is required");
+      return res.send('Title is required');
     }
 
     sanjuan.save();
@@ -19,17 +19,17 @@ function sanjuanController(SanJuan) {
     }
 
     // call find method from Book model to fetch a book from the database
-    SanJuan.find(query, (err, books) => {
+    SanJuan.find(query, (err, sanjuan) => {
       if (err) {
         return res.send(err);
       }
-      const returnBooks = books.map((book) => {
+      const returnSanjuan = sanjuan.map((book) => {
         const newBook = book.toJSON();
         newBook.links = {};
-        newBook.links.self = `http://${req.headers.host}/api/books/${book._id}`;
+        newBook.links.self = `http://${req.headers.host}/api/sanjuan/${book._id}`;
         return newBook;
       });
-      return res.json(returnBooks);
+      return res.json(returnSanjuan);
     });
   }
 

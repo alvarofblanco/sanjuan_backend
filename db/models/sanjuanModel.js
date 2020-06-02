@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -10,4 +10,4 @@ const sanjuanModel = new Schema({
   contact: { type: String },
 });
 
-module.exports = mongoose.model("SanJuan", sanjuanModel);
+module.exports = mongoose.model('SanJuan', sanjuanModel);
