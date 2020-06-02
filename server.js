@@ -1,8 +1,9 @@
 const express = require("express");
-const debug = require("debug")("app");
+const debug = require("debug")("server");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const chalk = require("chalk");
 
 const app = express();
 
