@@ -4,18 +4,15 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
+const connectDB = require('./db/connection');
+require('dotenv').config();
 
 const app = express();
 
-// Env settings
-
-if (process.env.ENV === 'test') {
-  debug(`${'this is a test'}`);
-  const db = mongoose.connect('mongodb://localhost/sanjuan_test');
-} else {
-  debug(`${'this is development'}`);
-  const db = mongoose.connect('mongodb://localhost/sanjuan_dev');
-}
+// Database connection
+connectDB().then(() => {
+  debug(`MongoDB connected successfully (${process.env.NODE_ENV})`);
+});
 
 // db config
 const PORT = process.env.PORT || 3000;
