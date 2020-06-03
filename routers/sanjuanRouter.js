@@ -1,6 +1,7 @@
 const express = require('express');
 const sanjuanController = require('../controllers/sanjuanController');
 const debug = require('debug')('server:sanjuanRouter');
+const Mongoose = require('mongoose');
 
 function routes(SanJuan) {
   const sanjuanRouter = express.Router();
@@ -12,11 +13,16 @@ function routes(SanJuan) {
 
   // Middleware to find the user by ID
   sanjuanRouter.use('/sanjuans/:sanjuanId', (req, res, next) => {
-    SanJuan.findById(req.params.sanjuanId, (err, sanjuan) => {
+    const sanJuanID = new Mongoose.Types.ObjectId(
+      req.params.sanJuanId,
+    );
+    SanJuan.findById(sanJuanID, (err, sanjuan) => {
       if (err) {
+        debug(`ERROR: ${err}`);
         return res.send(err);
       }
-      if (sanjuan && sanjuan.active == true) {
+      debug(`sanjuan: ${sanjuan}`);
+      if (sanjuan && sanjuan.active === true) {
         debug('SANJUAN', sanjuan);
         req.sanjuan = sanjuan;
         return next();

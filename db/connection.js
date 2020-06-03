@@ -21,12 +21,8 @@ switch (process.env.NODE_ENV) {
 }
 
 const connectDB = () => {
-  debug(
-    `NODE_ENV: ${chalk.red(
-      process.env.NODE_ENV,
-    )}\nconnection_string: ${connection}`,
-  );
   mongoose.set('useUnifiedTopology', true);
+  debug(`${chalk.yellow(`Connecting to: ${connection}`)} ...`);
   return mongoose.connect(connection, { useNewUrlParser: true });
 };
 

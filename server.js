@@ -10,13 +10,14 @@ require('dotenv').config();
 const app = express();
 
 // Database connection
-debug(`${chalk.yellow('Connecting to database...')}`);
 connectDB()
   .then(() => {
     debug(`MongoDB connected successfully (${process.env.NODE_ENV})`);
   })
   .catch((e) => {
     debug(`${chalk.red('ERROR could not connect to database')}`);
+    // Docker is going to handle the restart of the process
+    process.exit(1);
   });
 
 // db config
