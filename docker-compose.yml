@@ -1,0 +1,17 @@
+version: '2'
+services:
+  express:
+    build: .
+    ports:
+      - '3000:3000'
+    networks:
+      - sanjuan-network
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:3.6.18
+    networks:
+      - sanjuan-network
+networks:
+  sanjuan-network:
+    driver: bridge
