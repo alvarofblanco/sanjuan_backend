@@ -1,6 +1,12 @@
+const debug = require('debug')('server:sanjuanController');
+
 function sanjuanController(SanJuan) {
   async function post(req, res) {
     const sanjuan = new SanJuan(req.body);
+    sanjuan.created_at = new Date();
+    sanjuan.updated_at = new Date();
+    sanjuan.active = true;
+
     // if (!req.body.name) {
     //   res.status(400);
     //   return res.send('Title is required');
@@ -27,22 +33,42 @@ function sanjuanController(SanJuan) {
   function get(req, res) {
     const query = {};
     // filtering query params
-    if (req.query.genre) {
-      query.genre = req.query.genre;
+    if (req.query.name) {
+      query.name = req.query.name;
     }
 
-    // call find method from Book model to fetch a book from the database
+    // call find method from Sanjuan model to fetch a sanjuan from the database
     SanJuan.find(query, (err, sanjuan) => {
       if (err) {
         return res.send(err);
       }
-      const returnSanjuan = sanjuan.map((book) => {
-        const newBook = book.toJSON();
-        newBook.links = {};
-        newBook.links.self = `http://${req.headers.host}/api/sanjuan/${book._id}`;
-        return newBook;
+
+      // Checks if the array is empty
+      if (sanjuan.length == 0) {
+        return res.status(404).json({
+          message: 'Sanjuan list is empty',
+        });
+      }
+
+      const sanjuanList = sanjuan.map((sanjuan) => {
+        const newSanjuan = sanjuan.toJSON();
+
+        newSanjuan.id = newSanjuan._id;
+        delete newSanjuan._id;
+        delete newSanjuan.__v;
+        delete newSanjuan.created_at;
+        newSanjuan.links = {};
+        newSanjuan.links.self = `http://${req.headers.host}/api/sanjuans/${sanjuan._id}`;
+
+        return newSanjuan;
       });
-      return res.json(returnSanjuan);
+
+      const sanjuanReturn = {
+        message: 'Sanjuan List retrieved succesfully',
+        data: sanjuanList,
+      };
+
+      return res.json(sanjuanReturn);
     });
   }
 

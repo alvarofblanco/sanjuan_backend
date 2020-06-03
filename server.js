@@ -11,10 +11,10 @@ const app = express();
 
 if (process.env.ENV === 'test') {
   debug(`${'this is a test'}`);
-  const db = mongoose.connect('mongodb://localhost/bookAPI_test');
+  const db = mongoose.connect('mongodb://localhost/sanjuan_test');
 } else {
   debug(`${'this is development'}`);
-  const db = mongoose.connect('mongodb://localhost/bookAPI_dev');
+  const db = mongoose.connect('mongodb://localhost/sanjuan_dev');
 }
 
 // db config
@@ -32,8 +32,7 @@ app.use(bodyParser.json());
 app.use(morgan('tiny'));
 
 // Assign Routers to routes
-app.get('/sanjuans', sanjuanRouter);
-app.post('/sanjuans', sanjuanRouter);
+app.use('/api', sanjuanRouter);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to my api' });
