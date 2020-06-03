@@ -31,14 +31,8 @@ function sanjuanController(SanJuan) {
   }
 
   function get(req, res) {
-    const query = {};
-    // filtering query params
-    if (req.query.name) {
-      query.name = req.query.name;
-    }
-
     // call find method from Sanjuan model to fetch a sanjuan from the database
-    SanJuan.find(query, (err, sanjuan) => {
+    SanJuan.find({ active: true }, (err, sanjuan) => {
       if (err) {
         return res.send(err);
       }

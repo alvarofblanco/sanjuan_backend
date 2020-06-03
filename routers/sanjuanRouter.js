@@ -10,22 +10,21 @@ function routes(SanJuan) {
     .get(controller.get)
     .post(controller.post);
 
+  // Middleware to find the user by ID
   sanjuanRouter.use('/sanjuans/:sanjuanId', (req, res, next) => {
-    SanJuan.find(
-      { id: req.params.sanjuanId, active: true },
-      (err, sanjuan) => {
-        if (err) {
-          return res.send(err);
-        }
-        if (sanjuan) {
-          req.sanjuan = sanjuan;
-          return next();
-        }
-        return res.status(404).json({
-          message: 'sanjuan not found',
-        });
-      },
-    );
+    SanJuan.findById(req.params.sanjuanId, (err, sanjuan) => {
+      if (err) {
+        return res.send(err);
+      }
+      if (sanjuan && sanjuan.active == true) {
+        debug('SANJUAN', sanjuan);
+        req.sanjuan = sanjuan;
+        return next();
+      }
+      return res.status(404).json({
+        message: 'sanjuan not found',
+      });
+    });
   });
 
   sanjuanRouter
@@ -64,6 +63,22 @@ function routes(SanJuan) {
         return res
           .status(200)
           .json({ message: 'Resource updated successfully' });
+      });
+    })
+    .delete((req, res) => {
+      const { sanjuan } = req;
+      sanjuan.active = false;
+
+      sanjuan.save((e) => {
+        if (e) {
+          return res.status(500).json({
+            message: `Object with id: ${sanjuan.id} could not be deleted`,
+            error: e.toString(),
+          });
+        }
+        return res.status(202).json({
+          message: `Object with id: ${sanjuan.id} deleted successfully`,
+        });
       });
     });
 
