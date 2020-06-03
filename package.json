@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=server,server:* nodemon server.js",
+    "start": "DEBUG=server,server:* node server.js",
+    "start_dev": "DEBUG=server,server:* nodemon server.js",
     "lint": "eslint server.js"
   },
   "keywords": [],
