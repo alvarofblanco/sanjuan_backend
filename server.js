@@ -10,9 +10,14 @@ require('dotenv').config();
 const app = express();
 
 // Database connection
-connectDB().then(() => {
-  debug(`MongoDB connected successfully (${process.env.NODE_ENV})`);
-});
+debug(`${chalk.yellow('Connecting to database...')}`);
+connectDB()
+  .then(() => {
+    debug(`MongoDB connected successfully (${process.env.NODE_ENV})`);
+  })
+  .catch((e) => {
+    debug(`${chalk.red('ERROR could not connect to database')}`);
+  });
 
 // db config
 const PORT = process.env.PORT || 3000;
