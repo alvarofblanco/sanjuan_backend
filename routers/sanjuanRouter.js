@@ -21,14 +21,13 @@ function routes(SanJuan) {
         debug(`ERROR: ${err}`);
         return res.send(err);
       }
-      debug(`sanjuan: ${sanjuan}`);
       if (sanjuan && sanjuan.active === true) {
         debug('SANJUAN', sanjuan);
         req.sanjuan = sanjuan;
         return next();
       }
       return res.status(404).json({
-        message: 'sanjuan not found',
+        message: 'Sanjuan not found',
       });
     });
   });
